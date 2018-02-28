@@ -15,7 +15,7 @@ public class DetectHitBall : MonoBehaviour {
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("ball")) {
+        if (other.gameObject.CompareTag("Ball")) {
             //other.gameObject.GetComponent<Rigidbody>().AddForce(this.GetComponent<Rigidbody>().transform.position);
             other.gameObject.GetComponent<Rigidbody>().velocity = (other.gameObject.GetComponent<Rigidbody>().velocity+this.GetComponent<Rigidbody>().velocity)*10;
         }

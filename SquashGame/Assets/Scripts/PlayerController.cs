@@ -5,14 +5,33 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
     public float speed;
     private Rigidbody rb;
+    private Vector3 startPos;
+    private bool isFrozen;
 
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody>();
+        startPos = rb.position;
+        isFrozen = false;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    public void Reset()
+    {
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.MovePosition(startPos);
+        isFrozen = false;
+        Debug.Log("PC Reset");
+    }
+
+    public void SetFreeze(bool freeze)
+    {
+        isFrozen = freeze;
+        this.GetComponentInChildren<RacketController>().SetFreeze(freeze);
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
@@ -21,9 +40,12 @@ public class PlayerController : MonoBehaviour {
     {
         float moveHorizontal;
 
-        moveHorizontal = Input.GetAxis("Horizontal");
+        if (!isFrozen)
+        {
+            moveHorizontal = Input.GetAxis("Horizontal");
 
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, 0.0f);
-        rb.AddForce(movement * speed);
+            Vector3 movement = new Vector3(moveHorizontal, 0.0f, 0.0f);
+            rb.AddForce(movement * speed);
+        }
     }
 }
