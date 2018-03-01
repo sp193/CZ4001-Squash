@@ -8,12 +8,21 @@ public class BallPhysics : MonoBehaviour {
     private Vector3 prevSpd;
     private Vector3 startPos;
     private int bouncesOffGround;
+    //testing sound
+    public AudioSource surfaceBounce;
+    public AudioSource netBounce;
+
 
 	// Use this for initialization
 	void Start () {
         myRigidbody = GetComponent<Rigidbody>();
         startPos = myRigidbody.position;
         bouncesOffGround = 0;
+
+        var allAudio= GetComponents<AudioSource>();
+        surfaceBounce = allAudio[0];
+        netBounce = allAudio[1];
+
     }
 	
 	// Update is called once per frame
@@ -33,20 +42,30 @@ public class BallPhysics : MonoBehaviour {
     //Handle collisions.
     private void OnCollisionEnter(Collision collision)
     {
+
         ContactPoint cp = collision.contacts[0];
         GameObject other = cp.otherCollider.gameObject;
-
-        myRigidbody.velocity = Vector3.Reflect(oldvel, cp.normal);
-        prevSpd = myRigidbody.velocity;
-        myRigidbody.velocity += cp.normal * 10.0f;
-
+       
+        if (other.CompareTag("Net"))
+        {
+            netBounce.Play();
+            myRigidbody.velocity = Vector3.Reflect(oldvel, cp.normal);
+            prevSpd = myRigidbody.velocity;
+            myRigidbody.velocity += cp.normal * 10.0f;
+           
+        }
         if (other.CompareTag("Wall"))
         {
+            surfaceBounce.Play();
             FindObjectOfType<GameController>().AddScore(1);
+           
+           
         }
  
         if (other.CompareTag("Ground"))
         {
+
+            surfaceBounce.Play();
             bouncesOffGround++;
 
             if (bouncesOffGround >= 2)
