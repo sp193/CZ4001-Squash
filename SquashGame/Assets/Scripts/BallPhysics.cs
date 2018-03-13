@@ -35,7 +35,7 @@ public class BallPhysics : MonoBehaviour {
             || (position.y < -50 || position.y >= 50)
             || (position.z < -50 || position.z >= 50))
         {
-            FindObjectOfType<GameController>().GameOver();
+            FindObjectOfType<GameController>().InitGameOver();
         }
 	}
 
@@ -70,7 +70,7 @@ public class BallPhysics : MonoBehaviour {
 
             if (bouncesOffGround >= 2)
             {
-                FindObjectOfType<GameController>().GameOver();
+                FindObjectOfType<GameController>().InitGameOver();
             }
         }
         else

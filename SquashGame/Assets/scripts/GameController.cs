@@ -50,8 +50,8 @@ public class GameController : MonoBehaviour {
         scoreText.text = score.ToString();
     }
 
-    public void GameOver()
-    {
+    public void InitGameOver()
+    {   //This function must not be named "GameOver", otherwise there will be self-recursion.
         gameOver = true;
         gameOverText.enabled = true;
         restartGameText.enabled = true;
