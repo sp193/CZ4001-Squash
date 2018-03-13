@@ -12,9 +12,10 @@ public class BallPhysics : MonoBehaviour {
     public AudioSource surfaceBounce;
     public AudioSource netBounce;
 
+    public const float FORCE_MULTIPLIER = 160.0f;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         myRigidbody = GetComponent<Rigidbody>();
         startPos = myRigidbody.position;
         bouncesOffGround = 0;
@@ -42,7 +43,6 @@ public class BallPhysics : MonoBehaviour {
     //Handle collisions.
     private void OnCollisionEnter(Collision collision)
     {
-
         ContactPoint cp = collision.contacts[0];
         GameObject other = cp.otherCollider.gameObject;
        
@@ -51,7 +51,7 @@ public class BallPhysics : MonoBehaviour {
             netBounce.Play();
             myRigidbody.velocity = Vector3.Reflect(oldvel, cp.normal);
             prevSpd = myRigidbody.velocity;
-            myRigidbody.velocity += cp.normal * 1000.0f;
+            myRigidbody.velocity += cp.normal * BallPhysics.FORCE_MULTIPLIER;
            
         }
         if (other.CompareTag("Wall"))

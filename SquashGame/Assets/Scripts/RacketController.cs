@@ -44,6 +44,8 @@ public class RacketController : MonoBehaviour {
     private void SpawnBall(Vector3 velocity)
     {
         Vector3 pos = bc.transform.position;
+        pos.y += 20;
+        pos.z += 10;
         ballInstance = Instantiate(ball, pos, Quaternion.identity);
         ballInstance.GetComponent<Rigidbody>().velocity = velocity;
     }
@@ -74,7 +76,7 @@ public class RacketController : MonoBehaviour {
 
                 if(ballInstance == null)
                 {
-                    SpawnBall(new Vector3(0, 8.0f, 5.0f*8.0f));
+                    SpawnBall(new Vector3(0, 10.0f, 1.0f * BallPhysics.FORCE_MULTIPLIER));
                 }
             }
             else
