@@ -6,7 +6,7 @@ public class RacketController : MonoBehaviour {
 
     private bool swinging, swingingBack;
     private int rotationTickCount;
-    private Rigidbody rb;
+    private BoxCollider bc;
     public int rotationSpeed;
     private int rotationTicks;
     private bool isFrozen;
@@ -33,7 +33,7 @@ public class RacketController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        rb = GetComponent<Rigidbody>();
+        bc = GetComponentInChildren<BoxCollider>();
         rotationTicks = 90 / rotationSpeed;
         isFrozen = false;
         swinging = false;
@@ -43,8 +43,7 @@ public class RacketController : MonoBehaviour {
 
     private void SpawnBall(Vector3 velocity)
     {
-        Vector3 pos = rb.position;
-        pos.z += 5;
+        Vector3 pos = bc.transform.position;
         ballInstance = Instantiate(ball, pos, Quaternion.identity);
         ballInstance.GetComponent<Rigidbody>().velocity = velocity;
     }
