@@ -61,6 +61,12 @@ public class BallPhysics : MonoBehaviour {
            
            
         }
+		if (other.CompareTag("Destructible"))
+		{
+			surfaceBounce.Play();
+			FindObjectOfType<GameController>().AddScore(2);
+			FindObjectOfType<RandomSpawn>().Despawn(other);
+		}
  
         if (other.CompareTag("Ground"))
         {

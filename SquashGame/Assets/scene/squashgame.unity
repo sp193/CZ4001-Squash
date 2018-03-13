@@ -1146,6 +1146,7 @@ GameObject:
   - component: {fileID: 1255258287}
   - component: {fileID: 1255258286}
   - component: {fileID: 1255258285}
+  - component: {fileID: 1255258284}
   m_Layer: 0
   m_Name: FrontWall
   m_TagString: Wall
@@ -1153,6 +1154,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1255258284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1255258283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e1d997c407bb014b8a5a25f0b4ba7cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1565041935918680, guid: 7f50679c3117b054abe37d74f08ce65a, type: 2}
 --- !u!23 &1255258285
 MeshRenderer:
   m_ObjectHideFlags: 0
