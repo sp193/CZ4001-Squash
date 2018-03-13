@@ -31,9 +31,9 @@ public class BallPhysics : MonoBehaviour {
         oldvel = myRigidbody.velocity;
 
         //Check if out of bounds.
-        if((position.x < -50 || position.x >= 50)
-            || (position.y < -50 || position.y >= 50)
-            || (position.z < -50 || position.z >= 50))
+        if((position.x < -110 || position.x >= 110)
+            || (position.y < -110 || position.y >= 110)
+            || (position.z < -110 || position.z >= 110))
         {
             FindObjectOfType<GameController>().InitGameOver();
         }
@@ -51,7 +51,7 @@ public class BallPhysics : MonoBehaviour {
             netBounce.Play();
             myRigidbody.velocity = Vector3.Reflect(oldvel, cp.normal);
             prevSpd = myRigidbody.velocity;
-            myRigidbody.velocity += cp.normal * 10.0f;
+            myRigidbody.velocity += cp.normal * 1000.0f;
            
         }
         if (other.CompareTag("Wall"))
