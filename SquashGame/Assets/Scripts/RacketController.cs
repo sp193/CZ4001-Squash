@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class RacketController : MonoBehaviour {
 
-    private bool swinging, swingingBack;
-    private int rotationTickCount;
+    private SteamVR_TrackedObject trackedObject;    //Controller
     private BoxCollider bc;
-    public int rotationSpeed;
-    private int rotationTicks;
     private bool isFrozen;
     public GameObject ball;
     private GameObject ballInstance;
+
+    private SteamVR_Controller.Device Controller
+    {   //Return controller's input via the trackedObject's index.
+        get { return SteamVR_Controller.Input((int)trackedObject.index); }
+    }
 
     public void SetFreeze(bool freeze)
     {
@@ -31,13 +33,16 @@ public class RacketController : MonoBehaviour {
         ballInstance = null;
     }
 
+    //Called before start(). Used like a constructor.
+    void Awake()
+    {   //Upon load, obtain a reference to the SteamVR_TrackedObject component that's attached to the controllers.
+        trackedObject = GetComponent<SteamVR_TrackedObject>();
+    }
+
     // Use this for initialization
     void Start () {
         bc = GetComponentInChildren<BoxCollider>();
-        rotationTicks = 90 / rotationSpeed;
         isFrozen = false;
-        swinging = false;
-        swingingBack = false;
         ballInstance = null;
     }
 
@@ -56,44 +61,13 @@ public class RacketController : MonoBehaviour {
         if (isFrozen)
             return;
 
-        if (Input.GetButtonDown("Fire1"))
-        {   //Change control set.
-
-            if (!swinging && !swingingBack)
-            {
-                swinging = true;
-                swingingBack = false;
-                rotationTickCount = 0;
-            }
-        }
-
-        if(swinging)
+        if(Controller.velocity.z > 4.0f)
         {
-            if (rotationTickCount >= rotationTicks)
-            {
-                swinging = false;
-                swingingBack = true;
-
                 if(ballInstance == null)
                 {
-                    SpawnBall(new Vector3(0, 10.0f, 1.0f * BallPhysics.FORCE_MULTIPLIER));
+                    Vector3 pos = Controller.transform.pos;
+                    SpawnBall(pos * BallPhysics.FORCE_MULTIPLIER);
                 }
-            }
-            else
-            {
-                transform.Rotate(new Vector3(rotationSpeed, 0, 0));
-                rotationTickCount++;
-            }
-        }
-        if (swingingBack)
-        {
-            if (rotationTickCount <= 0)
-                swingingBack = false;
-            else
-            {
-                transform.Rotate(new Vector3(-rotationSpeed, 0, 0));
-                rotationTickCount--;
-            }
         }
     }
 }
