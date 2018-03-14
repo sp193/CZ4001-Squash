@@ -56,7 +56,6 @@ public class GameController : MonoBehaviour {
         gameOver = true;
         gameOverText.enabled = true;
         restartGameText.enabled = true;
-        this.GetComponent<PlayerController>().SetFreeze(true);
 
         //this.BroadcastMessage("GameOver");
         rController.GameOver();

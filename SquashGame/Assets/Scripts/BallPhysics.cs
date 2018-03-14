@@ -12,7 +12,7 @@ public class BallPhysics : MonoBehaviour {
     public AudioSource surfaceBounce;
     public AudioSource netBounce;
 
-    public const float FORCE_MULTIPLIER = 160.0f;
+    public const float FORCE_MULTIPLIER = 20.0f;
 
     // Use this for initialization
     void Start () {
