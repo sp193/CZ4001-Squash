@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour {
     public Text scoreText;
     public Text gameOverText;
     public Text restartGameText;
+    private RacketController rController = null;
 
     // Use this for initialization
     void Start () {
@@ -57,7 +58,8 @@ public class GameController : MonoBehaviour {
         restartGameText.enabled = true;
         this.GetComponent<PlayerController>().SetFreeze(true);
 
-        this.BroadcastMessage("GameOver");
+        //this.BroadcastMessage("GameOver");
+        rController.GameOver();
     }
 
     // Update is called once per frame
@@ -65,10 +67,13 @@ public class GameController : MonoBehaviour {
     {
         if (gameOver)
         {
-            if (Input.GetButtonDown("Fire1"))
+            if (rController.IsControllerSwung())
             {   //Change control set.
                 RestartGame();
             }
         }
+
+        if (rController == null)
+            rController = FindObjectOfType<RacketController>();
     }
 }

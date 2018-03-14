@@ -27,7 +27,6 @@ public class PlayerController : MonoBehaviour {
     public void SetFreeze(bool freeze)
     {
         isFrozen = freeze;
-        this.GetComponentInChildren<RacketController>().SetFreeze(freeze);
     }
 
     // Update is called once per frame

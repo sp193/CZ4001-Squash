@@ -5,8 +5,8 @@ using UnityEngine;
 public class RacketController : MonoBehaviour {
 
     private SteamVR_TrackedObject trackedObject;    //Controller
+    public GameObject racket;
     private BoxCollider bc;
-    private bool isFrozen;
     public GameObject ball;
     private GameObject ballInstance;
 
@@ -15,14 +15,8 @@ public class RacketController : MonoBehaviour {
         get { return SteamVR_Controller.Input((int)trackedObject.index); }
     }
 
-    public void SetFreeze(bool freeze)
-    {
-        isFrozen = freeze;
-    }
-
     public void Reset()
     {
-        isFrozen = false;
         Debug.Log("RC Reset");
     }
 
@@ -41,15 +35,14 @@ public class RacketController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        bc = GetComponentInChildren<BoxCollider>();
-        isFrozen = false;
+        bc = racket.GetComponentInChildren<BoxCollider>();
         ballInstance = null;
     }
 
     private void SpawnBall(Vector3 velocity)
     {
         Vector3 pos = bc.transform.position;
-        pos.y += 20;
+        //pos.y += 20;
         pos.z += 10;
         ballInstance = Instantiate(ball, pos, Quaternion.identity);
         ballInstance.GetComponent<Rigidbody>().velocity = velocity;
@@ -57,17 +50,21 @@ public class RacketController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
-        if (isFrozen)
-            return;
-
-        if(Controller.velocity.z > 4.0f)
+        if(IsControllerSwung())
         {
                 if(ballInstance == null)
                 {
                     Vector3 pos = Controller.transform.pos;
-                    SpawnBall(pos * BallPhysics.FORCE_MULTIPLIER);
+                    pos.z *= BallPhysics.FORCE_MULTIPLIER;
+                    SpawnBall(pos);
                 }
+
+            Debug.Log("Controller swung");
         }
+    }
+
+    public bool IsControllerSwung()
+    {
+        return (Controller.velocity.z > 0.1f) ;
     }
 }
