@@ -12,7 +12,9 @@ public class BallPhysics : MonoBehaviour {
     public AudioSource surfaceBounce;
     public AudioSource netBounce;
 
-    public const float FORCE_MULTIPLIER = 20.0f;
+    public const float FORCE_MULTIPLIER = 50.0f;
+    public const float UPWARD_FORCE_MULTIPLIER = 30.0f;
+    public const float REFLECT_FORCE_MULTIPLIER = 10.0f;
 
     // Use this for initialization
     void Start () {
@@ -51,7 +53,7 @@ public class BallPhysics : MonoBehaviour {
             netBounce.Play();
             myRigidbody.velocity = Vector3.Reflect(oldvel, cp.normal);
             prevSpd = myRigidbody.velocity;
-            myRigidbody.velocity += cp.normal * BallPhysics.FORCE_MULTIPLIER;
+            myRigidbody.velocity += cp.normal * BallPhysics.REFLECT_FORCE_MULTIPLIER;
            
         }
         if (other.CompareTag("Wall"))
