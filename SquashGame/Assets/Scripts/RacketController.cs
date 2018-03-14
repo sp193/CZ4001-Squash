@@ -36,6 +36,7 @@ public class RacketController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         bc = racket.GetComponentInChildren<BoxCollider>();
+        racket.transform.SetParent(gameObject.transform, false);
         ballInstance = null;
     }
 
