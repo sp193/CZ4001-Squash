@@ -7,18 +7,17 @@ public class GameController : MonoBehaviour {
 
     private int score;
     private bool gameOver;
-    public Text scoreText;
-    public Text gameOverText;
-    public Text restartGameText;
+    public TextMesh scoreText;
+    public TextMesh gameStatusText;
     private RacketController rController = null;
+    private int gameOverFrames;
 
     // Use this for initialization
     void Start () {
-        score = 0;
-        scoreText.text = score.ToString();
+        gameOverFrames = 0;
         gameOver = false;
-        gameOverText.enabled = false;
-        restartGameText.enabled = false;
+        gameStatusText.gameObject.SetActive(false);
+        ResetScore();
     }
 
     private void ResetScore()
@@ -32,8 +31,8 @@ public class GameController : MonoBehaviour {
         Debug.Log("GC Reset");
 
         gameOver = false;
-        gameOverText.enabled = false;
-        restartGameText.enabled = false;
+        gameStatusText.gameObject.SetActive(false);
+        scoreText.gameObject.SetActive(true);
 
         //Reset score
         ResetScore();
@@ -54,8 +53,7 @@ public class GameController : MonoBehaviour {
     public void InitGameOver()
     {   //This function must not be named "GameOver", otherwise there will be self-recursion.
         gameOver = true;
-        gameOverText.enabled = true;
-        restartGameText.enabled = true;
+        gameOverFrames = 0;
 
         //this.BroadcastMessage("GameOver");
         rController.GameOver();
@@ -66,6 +64,36 @@ public class GameController : MonoBehaviour {
     {
         if (gameOver)
         {
+            gameStatusText.text = "GAME OVER";
+
+            if (gameOverFrames % 30 == 0)
+            {
+                switch (gameOverFrames % (11 * 30) / 30)
+                {
+                    case 0:
+                    case 1:
+                    case 3:
+                    case 4:
+                        gameStatusText.gameObject.SetActive(true);
+                        scoreText.gameObject.SetActive(false);
+                        break;
+                    case 2:
+                    case 7:
+                    case 10:
+                        gameStatusText.gameObject.SetActive(false);
+                        scoreText.gameObject.SetActive(false);
+                        break;
+                    case 5:
+                    case 6:
+                    case 8:
+                    case 9:
+                        gameStatusText.gameObject.SetActive(false);
+                        scoreText.gameObject.SetActive(true);
+                        break;
+                }
+            }
+            gameOverFrames++;
+
             if (rController.IsControllerSwung())
             {   //Change control set.
                 RestartGame();
