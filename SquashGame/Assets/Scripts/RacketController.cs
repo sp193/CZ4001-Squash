@@ -12,7 +12,7 @@ public class RacketController : MonoBehaviour {
 
     private SteamVR_Controller.Device Controller
     {   //Return controller's input via the trackedObject's index.
-        get { return SteamVR_Controller.Input((int)trackedObject.index); }
+        get { return(trackedObject != null ? SteamVR_Controller.Input((int)trackedObject.index) : null); }
     }
 
     public void Reset()
@@ -54,7 +54,7 @@ public class RacketController : MonoBehaviour {
         {
                 if(ballInstance == null)
                 {
-                    Vector3 v = Controller.velocity;
+                    Vector3 v = Controller == null ? Vector3.zero : Controller.velocity;
                     v.z *= BallPhysics.FORCE_MULTIPLIER;
                     v.y *= BallPhysics.UPWARD_FORCE_MULTIPLIER;
                     SpawnBall(v);
@@ -64,6 +64,6 @@ public class RacketController : MonoBehaviour {
 
     public bool IsControllerSwung()
     {
-        return (Controller.velocity.z > 0.8f) ;
+        return (Controller != null ? Controller.velocity.z > 0.8f : false) ;
     }
 }

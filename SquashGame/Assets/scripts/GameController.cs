@@ -9,7 +9,8 @@ public class GameController : MonoBehaviour {
     private bool gameOver;
     public TextMesh scoreText;
     public TextMesh gameStatusText;
-    private RacketController rController = null;
+    public GameObject controller;
+    private RacketController racketController;
     private int gameOverFrames;
 
     // Use this for initialization
@@ -18,6 +19,9 @@ public class GameController : MonoBehaviour {
         gameOver = false;
         gameStatusText.gameObject.SetActive(false);
         ResetScore();
+
+        //Initialize reference to RacketController.
+        racketController = controller.GetComponent<RacketController>();
     }
 
     private void ResetScore()
@@ -55,8 +59,7 @@ public class GameController : MonoBehaviour {
         gameOver = true;
         gameOverFrames = 0;
 
-        //this.BroadcastMessage("GameOver");
-        rController.GameOver();
+        racketController.GameOver();
     }
 
     // Update is called once per frame
@@ -94,13 +97,10 @@ public class GameController : MonoBehaviour {
             }
             gameOverFrames++;
 
-            if (rController.IsControllerSwung())
+            if (racketController.IsControllerSwung())
             {   //Change control set.
                 RestartGame();
             }
         }
-
-        if (rController == null)
-            rController = FindObjectOfType<RacketController>();
     }
 }
