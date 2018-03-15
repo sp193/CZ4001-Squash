@@ -45,44 +45,50 @@ public class BallPhysics : MonoBehaviour {
     //Handle collisions.
     private void OnCollisionEnter(Collision collision)
     {
-        ContactPoint cp = collision.contacts[0];
-        GameObject other = cp.otherCollider.gameObject;
-       
-        if (other.CompareTag("Net"))
-        {
-            netBounce.Play();
-            myRigidbody.velocity = Vector3.Reflect(oldvel, cp.normal);
-            prevSpd = myRigidbody.velocity;
-            myRigidbody.velocity += cp.normal * BallPhysics.REFLECT_FORCE_MULTIPLIER;
-           
-        }
-        if (other.CompareTag("Wall"))
-        {
-            surfaceBounce.Play();
-            FindObjectOfType<GameController>().AddScore(1);
-           
-           
-        }
-		if (other.CompareTag("Destructible"))
-		{
-			surfaceBounce.Play();
-			FindObjectOfType<GameController>().AddScore(2);
-			FindObjectOfType<RandomSpawn>().Despawn(other);
-		}
- 
-        if (other.CompareTag("Ground"))
-        {
+        ContactPoint cp;
+        int i;
+        for (i = 0, cp = collision.contacts[0]; i < collision.contacts.Length; i++,cp= collision.contacts[i]) {
+            GameObject other = cp.otherCollider.gameObject;
 
-            surfaceBounce.Play();
-            bouncesOffGround++;
-
-            if (bouncesOffGround >= 2)
+            if (other.CompareTag("Net"))
             {
-                FindObjectOfType<GameController>().InitGameOver();
+                netBounce.Play();
+                myRigidbody.velocity = Vector3.Reflect(oldvel, cp.normal);
+                prevSpd = myRigidbody.velocity;
+                myRigidbody.velocity += cp.normal * BallPhysics.REFLECT_FORCE_MULTIPLIER;
+
             }
+            if (other.CompareTag("Wall"))
+            {
+                surfaceBounce.Play();
+                FindObjectOfType<GameController>().AddScore(1);
+
+
+            }
+            if (other.CompareTag("Destructible"))
+            {
+                surfaceBounce.Play();
+                FindObjectOfType<GameController>().AddScore(2);
+                FindObjectOfType<RandomSpawn>().Despawn(other);
+            }
+
+            if (other.CompareTag("Ground"))
+            {
+                surfaceBounce.Play();
+                bouncesOffGround++;
+
+                if (bouncesOffGround >= 2)
+                {
+                    FindObjectOfType<GameController>().InitGameOver();
+                }
+
+                if (Vector3.Magnitude(myRigidbody.velocity) < 2.0f)  //Ball has stopped moving on the ground.
+                    FindObjectOfType<GameController>().InitGameOver();
+                Debug.Log("mag: " + Vector3.Magnitude(myRigidbody.velocity));
+            }
+            else
+                bouncesOffGround = 0;
         }
-        else
-            bouncesOffGround = 0;
     }
 
     public void Reset()
