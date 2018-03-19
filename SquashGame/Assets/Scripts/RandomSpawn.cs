@@ -11,22 +11,30 @@ public class RandomSpawn : MonoBehaviour
     private Vector3 tSize = new Vector3(2.0f, 4.0f, 0.0f);
     private Vector3 tRotation = new Vector3(0, 90, -90);
     protected static List<GameObject> allTarget;
-
+	private int counter = 0;
+	private float timeInterval = 5.0f;
 
     // Use this for initialization
     void Start()
     {
         allTarget = new List<GameObject>();
-       TestTarget();
+       //TestTarget();
+		for (int i = allTarget.Count; i < maxNumTarget; i++)
+		{
+			SpawnTarget();
+		}
+		InvokeRepeating ("TimeUp", 0f, timeInterval);
     }
 
     // Update is called once per frame
     void Update()
     {
-        for (int i = allTarget.Count; i < maxNumTarget; i++)
-        {
-            SpawnTarget();
-        }
+       
+
+
+
+
+
     }
     public void TestTarget()
     {
@@ -55,13 +63,29 @@ public class RandomSpawn : MonoBehaviour
         allTarget.Add(Instantiate(target, pos, target.transform.rotation));
       
     }
+	public void TimeUp(){
+				
+				Vector3 pos = transform.position;
+				Vector3 size = transform.lossyScale;
+				int selected = counter % 3;
+				pos.z = pos.z - size.z;
+				pos.x= pos.x + Random.Range((-size.x + tSize.x) / 2, (size.x - tSize.x) / 2); 
+				pos.y = pos.y + Random.Range((-size.y + tSize.y) / 2, (size.y - tSize.y) / 2);
+				allTarget[selected].transform.position = pos;
+				counter++;
+	}
 
     public void Despawn(GameObject other)
     {
+		Vector3 pos = transform.position;
+		Vector3 size = transform.lossyScale;
 
-        allTarget.Remove(other);
-        GameObject.Destroy(other);
-        
+
+		pos.z = pos.z - size.z;
+		pos.x= pos.x + Random.Range((-size.x + tSize.x) / 2, (size.x - tSize.x) / 2); 
+		pos.y = pos.y + Random.Range((-size.y + tSize.y) / 2, (size.y - tSize.y) / 2);
+		other.transform.position = pos;
+
     }
    
 }

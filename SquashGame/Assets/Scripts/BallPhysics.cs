@@ -8,9 +8,14 @@ public class BallPhysics : MonoBehaviour {
     private Vector3 prevSpd;
     private Vector3 startPos;
     private int bouncesOffGround;
-    //testing sound
+    // sound
     public AudioSource surfaceBounce;
     public AudioSource netBounce;
+	// Particle For Ground
+	public ParticleSystem dustEffect;
+	//Particle For Target
+	public ParticleSystem sparkEffect = null;
+	public ParticleSystem smokeEffect = null;
 
     public const float FORCE_MULTIPLIER = 30.0f;
     public const float UPWARD_FORCE_MULTIPLIER = 24.0f;
@@ -25,6 +30,7 @@ public class BallPhysics : MonoBehaviour {
         var allAudio= GetComponents<AudioSource>();
         surfaceBounce = allAudio[0];
         netBounce = allAudio[1];
+		dustEffect =  GetComponents<ParticleSystem>()[0];
 
     }
 	
@@ -67,15 +73,28 @@ public class BallPhysics : MonoBehaviour {
             }
             if (other.CompareTag("Destructible"))
             {
+				if (sparkEffect == null) {
+					var children = other.GetComponentsInChildren<ParticleSystem> ();
+					sparkEffect = children [1];
+					smokeEffect = children [0];
+				}
+				if (sparkEffect.isStopped) {
+						sparkEffect.Play();
+						smokeEffect.Play();
+				}
+			
                 surfaceBounce.Play();
+
                 FindObjectOfType<GameController>().AddScore(2);
-                FindObjectOfType<RandomSpawn>().Despawn(other);
+               // FindObjectOfType<RandomSpawn>().Despawn(other);
+
             }
 
             if (other.CompareTag("Ground"))
             {
                 surfaceBounce.Play();
                 bouncesOffGround++;
+				dustEffect.Emit (100);
 
                 if (bouncesOffGround >= 2)
                 {

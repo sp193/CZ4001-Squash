@@ -12,7 +12,9 @@ public class GameController : MonoBehaviour {
     public GameObject controller;
     private RacketController racketController;
     private int gameOverFrames;
-
+	//Particle for game over
+	public GameObject overObject = null;
+	public ParticleSystem overEffect = null;
     // Use this for initialization
     void Start () {
         gameOverFrames = 0;
@@ -22,6 +24,8 @@ public class GameController : MonoBehaviour {
 
         //Initialize reference to RacketController.
         racketController = controller.GetComponent<RacketController>();
+		overObject = GameObject.FindGameObjectWithTag ("Shiny");
+
     }
 
     private void ResetScore()
@@ -60,6 +64,8 @@ public class GameController : MonoBehaviour {
         gameOverFrames = 0;
 
         racketController.GameOver();
+		overEffect = overObject.GetComponent<ParticleSystem>();
+		overEffect.Play ();
     }
 
     // Update is called once per frame
@@ -99,6 +105,9 @@ public class GameController : MonoBehaviour {
 
             if (racketController.IsControllerSwung())
             {   //Change control set.
+				if (overEffect.isPlaying)
+					overEffect.Stop ();
+				
                 RestartGame();
             }
         }

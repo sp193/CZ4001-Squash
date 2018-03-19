@@ -8,6 +8,8 @@ TagManager:
   - Ball
   - Ground
   - Net
+  - Destructible
+  - Shiny
   layers:
   - Default
   - TransparentFX
