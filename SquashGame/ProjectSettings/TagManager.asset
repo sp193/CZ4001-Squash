@@ -11,6 +11,7 @@ TagManager:
   - Destructible
   - Shiny
   - Explo
+  - SideWall
   layers:
   - Default
   - TransparentFX

@@ -57,7 +57,8 @@ public class BallPhysics : MonoBehaviour {
     {
         ContactPoint cp;
         int i;
-        for (i = 0, cp = collision.contacts[0]; i < collision.contacts.Length; i++,cp= collision.contacts[i]) {
+        for (i = 0; i < collision.contacts.Length; i++) {
+            cp = collision.contacts[i];
             GameObject other = cp.otherCollider.gameObject;
 
             if (other.CompareTag("Net"))
@@ -66,14 +67,11 @@ public class BallPhysics : MonoBehaviour {
                 myRigidbody.velocity = Vector3.Reflect(oldvel, cp.normal);
                 prevSpd = myRigidbody.velocity;
                 myRigidbody.velocity += cp.normal * BallPhysics.REFLECT_FORCE_MULTIPLIER;
-
             }
             if (other.CompareTag("Wall"))
             {
                 surfaceBounce.Play();
                 FindObjectOfType<GameController>().AddScore(1);
-
-
             }
             if (other.CompareTag("Destructible"))
             {
@@ -97,7 +95,6 @@ public class BallPhysics : MonoBehaviour {
 
                 if (Vector3.Magnitude(myRigidbody.velocity) < 2.0f)  //Ball has stopped moving on the ground.
                     FindObjectOfType<GameController>().InitGameOver();
-                Debug.Log("mag: " + Vector3.Magnitude(myRigidbody.velocity));
             }
             else
                 bouncesOffGround = 0;
