@@ -17,10 +17,10 @@ public class BallPhysics : MonoBehaviour {
 	public ParticleSystem sparkEffect = null;
 	public ParticleSystem smokeEffect = null;
 
-    public const float FORWARD_FORCE_MULTIPLIER = 30.0f;
-    public const float DIRECTIONAL_FORCE_MULTIPLIER = 16.0f;
-    public const float UPWARD_FORCE_MULTIPLIER = 18.0f;
-    public const float REFLECT_FORCE_MULTIPLIER = 7.0f;
+    public const float FORWARD_FORCE_MULTIPLIER = 28.0f;
+    public const float DIRECTIONAL_FORCE_MULTIPLIER = 14.0f;
+    public const float UPWARD_FORCE_MULTIPLIER = 16.0f;
+    public const float REFLECT_FORCE_MULTIPLIER = 16.0f;
 
     // Use this for initialization
     void Start () {
