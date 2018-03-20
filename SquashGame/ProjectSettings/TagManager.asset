@@ -13,6 +13,7 @@ TagManager:
   - Explo
   - SideWall
   - Dust
+  - Audio
   layers:
   - Default
   - TransparentFX

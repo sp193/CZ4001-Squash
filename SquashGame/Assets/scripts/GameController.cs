@@ -13,8 +13,13 @@ public class GameController : MonoBehaviour {
     private RacketController racketController;
     private int gameOverFrames;
 	//Particle for game over
-	public GameObject overObject = null;
 	public ParticleSystem overEffect = null;
+	//Audio for game over
+	public AudioSource overWhistle = null;
+	public AudioSource overCrowds = null;
+
+
+
     // Use this for initialization
     void Start () {
         gameOverFrames = 0;
@@ -24,7 +29,11 @@ public class GameController : MonoBehaviour {
 
         //Initialize reference to RacketController.
         racketController = controller.GetComponent<RacketController>();
-		overObject = GameObject.FindGameObjectWithTag ("Shiny");
+		var particleObj = GameObject.FindGameObjectWithTag ("Shiny");
+		overEffect = particleObj.GetComponent<ParticleSystem>();
+		var audioObj = GameObject.FindGameObjectsWithTag ("Audio");
+		overWhistle = audioObj [0].GetComponent<AudioSource> ();
+		overCrowds = audioObj [1].GetComponent<AudioSource> ();
 
     }
 
@@ -64,9 +73,14 @@ public class GameController : MonoBehaviour {
         gameOverFrames = 0;
 
         racketController.GameOver();
-		overEffect = overObject.GetComponent<ParticleSystem>();
+
 		if(overEffect.isStopped)
 			overEffect.Play ();
+
+		if (!overWhistle.isPlaying) {
+			overWhistle.Play ();
+			overCrowds.Play ();
+		}
     }
 
     // Update is called once per frame
@@ -108,6 +122,9 @@ public class GameController : MonoBehaviour {
             {   //Change control set.
 				if (overEffect.isPlaying)
 					overEffect.Stop ();
+
+				if (overCrowds.isPlaying)
+					overCrowds.Stop ();
 				
                 RestartGame();
             }

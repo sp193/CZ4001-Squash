@@ -9,7 +9,7 @@ public class BallPhysics : MonoBehaviour {
     private Vector3 startPos;
     private int bouncesOffGround;
     // sound
-    public AudioSource surfaceBounce;
+	public AudioSource[] surfaceBounce;
     public AudioSource netBounce;
 	// Particle For Ground
 	public ParticleSystem dustEffect;
@@ -24,14 +24,20 @@ public class BallPhysics : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+		//init audio array
+		surfaceBounce = new AudioSource[5];
+	
         myRigidbody = GetComponent<Rigidbody>();
         startPos = myRigidbody.position;
         bouncesOffGround = 0;
-
+		// get all audio source , 0 = hitwall 1 = racket 2+ = bounce
         var allAudio= GetComponents<AudioSource>();
-        surfaceBounce = allAudio[0];
-        netBounce = allAudio[1];
+		for(int i = 1; i < 6; i++) 
+			surfaceBounce[i-1] = allAudio[i];
+		
+        netBounce = allAudio[0];
 
+		//particle init
 		var groundEffect =  GameObject.FindGameObjectWithTag("Dust");
 		dustEffect = groundEffect.GetComponent<ParticleSystem> ();
 	    var allEffect = GameObject.FindGameObjectsWithTag ("Explo");
@@ -65,14 +71,16 @@ public class BallPhysics : MonoBehaviour {
 
             if (other.CompareTag("Net"))
             {
-                netBounce.Play();
+				if(!netBounce.isPlaying)
+                	netBounce.Play();
                 myRigidbody.velocity = Vector3.Reflect(oldvel, cp.normal);
                 prevSpd = myRigidbody.velocity;
                 myRigidbody.velocity += cp.normal * BallPhysics.REFLECT_FORCE_MULTIPLIER;
             }
             if (other.CompareTag("Wall"))
             {
-                surfaceBounce.Play();
+				if (!surfaceBounce [0].isPlaying)
+					surfaceBounce [0].Play();
                 FindObjectOfType<GameController>().AddScore(1);
             }
             if (other.CompareTag("Destructible"))
@@ -116,9 +124,12 @@ public class BallPhysics : MonoBehaviour {
 		// play effect based on contact point position( to play it at previous position)
 		Vector3 pos = target.point;
 		sparkEffect.transform.position = pos;
-		sparkEffect.Play ();
-		//audio
-		surfaceBounce.Play();
+		//particle play
+		if(!sparkEffect.isPlaying)
+			sparkEffect.Play();
+		//audio play
+		if(!surfaceBounce[4].isPlaying)
+			surfaceBounce[4].Play();
 
 	}
 
@@ -128,10 +139,11 @@ public class BallPhysics : MonoBehaviour {
 		Vector3 pos = target.point;
 		pos.y += 0.1f;
 		dustEffect.transform.position = pos;
-
-		dustEffect.Emit (200);
+		//particle emit
+		if(!dustEffect.isEmitting)
+			dustEffect.Emit (200);
 		//audio
-		surfaceBounce.Play();
+		surfaceBounce[Random.Range(0,3)].Play();
 
 	}
 
