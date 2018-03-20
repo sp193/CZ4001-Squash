@@ -55,8 +55,9 @@ public class RacketController : MonoBehaviour {
                 if(ballInstance == null)
                 {
                     Vector3 v = Controller == null ? Vector3.zero : Controller.velocity;
-                    v.z *= BallPhysics.FORCE_MULTIPLIER;
+                    v.z *= BallPhysics.FORWARD_FORCE_MULTIPLIER;
                     v.y *= BallPhysics.UPWARD_FORCE_MULTIPLIER;
+                    v.x *= BallPhysics.DIRECTIONAL_FORCE_MULTIPLIER;
                     SpawnBall(v);
                 }
         }

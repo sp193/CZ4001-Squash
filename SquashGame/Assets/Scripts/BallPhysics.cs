@@ -17,9 +17,10 @@ public class BallPhysics : MonoBehaviour {
 	public ParticleSystem sparkEffect = null;
 	public ParticleSystem smokeEffect = null;
 
-    public const float FORCE_MULTIPLIER = 30.0f;
-    public const float UPWARD_FORCE_MULTIPLIER = 24.0f;
-    public const float REFLECT_FORCE_MULTIPLIER = 10.0f;
+    public const float FORWARD_FORCE_MULTIPLIER = 30.0f;
+    public const float DIRECTIONAL_FORCE_MULTIPLIER = 16.0f;
+    public const float UPWARD_FORCE_MULTIPLIER = 18.0f;
+    public const float REFLECT_FORCE_MULTIPLIER = 7.0f;
 
     // Use this for initialization
     void Start () {
@@ -78,7 +79,7 @@ public class BallPhysics : MonoBehaviour {
 				
 				PlayEffect (collision.contacts[0]);
                 surfaceBounce.Play();
-                FindObjectOfType<GameController>().AddScore(2);
+                FindObjectOfType<GameController>().AddScore(4);
                 FindObjectOfType<RandomSpawn>().Despawn(other);
             }
 
@@ -92,12 +93,12 @@ public class BallPhysics : MonoBehaviour {
                 {
                     FindObjectOfType<GameController>().InitGameOver();
                 }
-
-                if (Vector3.Magnitude(myRigidbody.velocity) < 2.0f)  //Ball has stopped moving on the ground.
-                    FindObjectOfType<GameController>().InitGameOver();
             }
             else
                 bouncesOffGround = 0;
+
+            if (Vector3.Magnitude(myRigidbody.velocity) < 4.0f)  //Ball has stopped moving on the ground.
+                FindObjectOfType<GameController>().InitGameOver();
         }
     }
 

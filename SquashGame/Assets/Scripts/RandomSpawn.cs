@@ -8,7 +8,7 @@ public class RandomSpawn : MonoBehaviour
     private static int maxNumTarget = 3;
     // public static int numTarget = 0;
     public GameObject target;
-    private Vector3 tSize = new Vector3(2.0f, 4.0f, 0.0f);
+    private Vector3 tSize = new Vector3(2.0f, 8.0f, 0.0f);
     private Vector3 tRotation = new Vector3(0, 90, -90);
     protected static List<GameObject> allTarget;
 	private int counter = 0;
@@ -26,16 +26,6 @@ public class RandomSpawn : MonoBehaviour
 		InvokeRepeating ("TimeUp", 0f, timeInterval);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-       
-
-
-
-
-
-    }
     public void TestTarget()
     {
         Vector3 pos = transform.position;
