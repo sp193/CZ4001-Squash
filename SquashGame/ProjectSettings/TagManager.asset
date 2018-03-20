@@ -12,6 +12,7 @@ TagManager:
   - Shiny
   - Explo
   - SideWall
+  - Dust
   layers:
   - Default
   - TransparentFX

@@ -65,7 +65,8 @@ public class GameController : MonoBehaviour {
 
         racketController.GameOver();
 		overEffect = overObject.GetComponent<ParticleSystem>();
-		overEffect.Play ();
+		if(overEffect.isStopped)
+			overEffect.Play ();
     }
 
     // Update is called once per frame

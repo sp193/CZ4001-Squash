@@ -15,7 +15,7 @@ public class BallPhysics : MonoBehaviour {
 	public ParticleSystem dustEffect;
 	//Particle For Target
 	public ParticleSystem sparkEffect = null;
-	public ParticleSystem smokeEffect = null;
+	//public ParticleSystem smokeEffect = null;
 
     public const float FORWARD_FORCE_MULTIPLIER = 28.0f;
     public const float DIRECTIONAL_FORCE_MULTIPLIER = 14.0f;
@@ -31,11 +31,12 @@ public class BallPhysics : MonoBehaviour {
         var allAudio= GetComponents<AudioSource>();
         surfaceBounce = allAudio[0];
         netBounce = allAudio[1];
-		dustEffect =  GetComponents<ParticleSystem>()[0];
-		var allEffect = GameObject.FindGameObjectsWithTag ("Explo");
+
+		var groundEffect =  GameObject.FindGameObjectWithTag("Dust");
+		dustEffect = groundEffect.GetComponent<ParticleSystem> ();
+	    var allEffect = GameObject.FindGameObjectsWithTag ("Explo");
 		//assigned invisible particlesystem
 		sparkEffect = allEffect [1].GetComponent<ParticleSystem>();
-		smokeEffect = allEffect [0].GetComponent<ParticleSystem>();
 
     }
 	
@@ -77,18 +78,16 @@ public class BallPhysics : MonoBehaviour {
             if (other.CompareTag("Destructible"))
             {
 				
-				PlayEffect (collision.contacts[0]);
-                surfaceBounce.Play();
+				PlayTargetEffect (collision.contacts[0]);
+                
                 FindObjectOfType<GameController>().AddScore(4);
-                FindObjectOfType<RandomSpawn>().Despawn(other);
+               // FindObjectOfType<RandomSpawn>().Despawn(other);
             }
 
             if (other.CompareTag("Ground"))
             {
-                surfaceBounce.Play();
+				PlayGroundEffect(collision.contacts [0]);
                 bouncesOffGround++;
-				dustEffect.Emit (100);
-
                 if (bouncesOffGround >= 2)
                 {
                     FindObjectOfType<GameController>().InitGameOver();
@@ -112,18 +111,27 @@ public class BallPhysics : MonoBehaviour {
         Debug.Log("BC Reset");
     }
 
-	public void PlayEffect(ContactPoint target)
+	public void PlayTargetEffect(ContactPoint target)
 	{
 		// play effect based on contact point position( to play it at previous position)
 		Vector3 pos = target.point;
-
-
-		smokeEffect.transform.position = pos;
 		sparkEffect.transform.position = pos;
-
-		smokeEffect.Play ();
 		sparkEffect.Play ();
+		//audio
+		surfaceBounce.Play();
 
+	}
+
+	public void PlayGroundEffect(ContactPoint target)
+	{
+		// play effect based on contact point position( to play it at previous position)
+		Vector3 pos = target.point;
+		pos.y += 0.1f;
+		dustEffect.transform.position = pos;
+
+		dustEffect.Emit (200);
+		//audio
+		surfaceBounce.Play();
 
 	}
 
