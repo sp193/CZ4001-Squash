@@ -10,6 +10,7 @@ TagManager:
   - Net
   - Destructible
   - Shiny
+  - Explo
   layers:
   - Default
   - TransparentFX

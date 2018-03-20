@@ -31,6 +31,10 @@ public class BallPhysics : MonoBehaviour {
         surfaceBounce = allAudio[0];
         netBounce = allAudio[1];
 		dustEffect =  GetComponents<ParticleSystem>()[0];
+		var allEffect = GameObject.FindGameObjectsWithTag ("Explo");
+		//assigned invisible particlesystem
+		sparkEffect = allEffect [1].GetComponent<ParticleSystem>();
+		smokeEffect = allEffect [0].GetComponent<ParticleSystem>();
 
     }
 	
@@ -73,21 +77,11 @@ public class BallPhysics : MonoBehaviour {
             }
             if (other.CompareTag("Destructible"))
             {
-				if (sparkEffect == null) {
-					var children = other.GetComponentsInChildren<ParticleSystem> ();
-					sparkEffect = children [1];
-					smokeEffect = children [0];
-				}
-				if (sparkEffect.isStopped) {
-						sparkEffect.Play();
-						smokeEffect.Play();
-				}
-			
+				
+				PlayEffect (collision.contacts[0]);
                 surfaceBounce.Play();
-
                 FindObjectOfType<GameController>().AddScore(2);
-               // FindObjectOfType<RandomSpawn>().Despawn(other);
-
+                FindObjectOfType<RandomSpawn>().Despawn(other);
             }
 
             if (other.CompareTag("Ground"))
@@ -119,4 +113,20 @@ public class BallPhysics : MonoBehaviour {
 
         Debug.Log("BC Reset");
     }
+
+	public void PlayEffect(ContactPoint target)
+	{
+		// play effect based on contact point position( to play it at previous position)
+		Vector3 pos = target.point;
+
+
+		smokeEffect.transform.position = pos;
+		sparkEffect.transform.position = pos;
+
+		smokeEffect.Play ();
+		sparkEffect.Play ();
+
+
+	}
+
 }
