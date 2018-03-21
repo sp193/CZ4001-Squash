@@ -89,7 +89,7 @@ public class BallPhysics : MonoBehaviour {
 				PlayTargetEffect (collision.contacts[0]);
                 
                 FindObjectOfType<GameController>().AddScore(4);
-               // FindObjectOfType<RandomSpawn>().Despawn(other);
+                FindObjectOfType<RandomSpawn>().Despawn(other);
             }
 
             if (other.CompareTag("Ground"))

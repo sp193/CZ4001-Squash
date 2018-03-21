@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 212064872399514610}
   - component: {fileID: 95721924948582814}
   m_Layer: 0
-  m_Name: target
+  m_Name: Target
   m_TagString: Destructible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +36,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1761302109155304}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.41, y: 1.53, z: 0.202}
+  m_LocalPosition: {x: 0.22, y: 1.81, z: -0.0482}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
